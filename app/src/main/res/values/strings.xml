@@ -16,6 +16,6 @@
     <string name="main_temp">16*</string>
     <string name="feels_alike">Feels like 16*</string>
     <string name="weather_type">Drizzle</string>
-    <string name="sunrise">MSunrise</string>
+    <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
 </resources>
