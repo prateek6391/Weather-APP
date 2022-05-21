@@ -20,6 +20,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyWeather"
             android:exported="true">
+
+        </activity>
+        <activity android:name=".SplashScreen"
+            android:theme="@style/SplashScreenBackground"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
