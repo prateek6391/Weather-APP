@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
@@ -15,6 +16,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputBinding
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -84,10 +86,10 @@ class MainActivity : AppCompatActivity() {
                 //  final latitude and longitude code here
                 if (ActivityCompat.checkSelfPermission(
                         this,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                        Manifest.permission.ACCESS_FINE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                         this,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION
+                        Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     requestPermission()
@@ -138,19 +140,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setDataOnViews(body: ModelClass?) {
+
+
+
+
+        activityMainBinding.progressBar.visibility = View.GONE
+        activityMainBinding.rlMainLayout.visibility = View.VISIBLE
         val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm")
         val currentDate = sdf.format(Date())
         activityMainBinding.tvDateAndTime.text = currentDate
         activityMainBinding.tvDayMaxTemp.text = "Day " + kelvinToCelsius(body!!.main.temp_max) + "°"
         activityMainBinding.tvDayMinTemp.text =
-            "Night " + kelvinToCelsius(body!!.main.temp_min) + "°"
-        activityMainBinding.tvTemp.text = "" + kelvinToCelsius(body!!.main.temp) + "°"
-        activityMainBinding.tvFeelsLike.text = "Feels Alike " + kelvinToCelsius(body!!.main.feels_like) + "°"
+            "Night " + kelvinToCelsius(body.main.temp_min) + "°"
+        activityMainBinding.tvTemp.text = "" + kelvinToCelsius(body.main.temp) + "°"
+        activityMainBinding.tvFeelsLike.text = "Feels Alike " + kelvinToCelsius(body.main.feels_like) + "°"
         activityMainBinding.tvWeatherType.text = body.weather[0].main
         activityMainBinding.tvSunrise.text = timeStampToLocalDate(body.sys.sunrise.toLong())
         activityMainBinding.tvSunset.text = timeStampToLocalDate(body.sys.sunset.toLong())
         activityMainBinding.tvPressure.text = body.main.pressure.toString()
-        activityMainBinding.tvHumiditty.text = body.main.pressure.toString() + " %"
+        activityMainBinding.tvHumiditty.text = body.main.humidity.toString() + " %"
         activityMainBinding.tvWindSpeed.text = body.windr.speed.toString() + " m/s"
 
         activityMainBinding.tvTempFarenhite.text =
@@ -338,10 +346,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestPermission() {
         ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+            this, arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
             ),
             PERMISSION_REQUEST_ACCESS_LOCATION
         )
@@ -349,19 +356,21 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
-        const val API_KEY = "951776bb64525a335fe0c4ca720e1532"
+//        const val API_KEY = "951776bb64525a335fe0c4ca720e1532"
+        const val API_KEY = "dab3af44de7d24ae7ff86549334e45bd"
     }
 
     private fun checkPermissions(): Boolean {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
+            )
+            == PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) ==
-            PackageManager.PERMISSION_GRANTED
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED
         ) {
             return true
         }
